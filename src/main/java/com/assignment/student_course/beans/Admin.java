@@ -21,18 +21,18 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 public class Admin {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
-	private String emailId;
-	private String password;
-	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "Admin_Roles",
-	joinColumns = @JoinColumn(name = "Admin_Id"),
-	inverseJoinColumns = @JoinColumn(name = "Role_Id"))
-	private Set<UserRole> roles = new HashSet<>();
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private String emailId;
+    private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Admin_Roles",
+            joinColumns = @JoinColumn(name = "Admin_Id"),
+            inverseJoinColumns = @JoinColumn(name = "Role_Id"))
+    private Set<UserRole> roles = new HashSet<>();
+
 }

@@ -24,85 +24,84 @@ import java.util.Set;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-	@Autowired
-	private AdminRepo aRepo;
+    @Autowired
+    private AdminRepo aRepo;
 
-	@Autowired
-	private UserRepo uRepo;
+    @Autowired
+    private UserRepo uRepo;
 
-	@Autowired
-	private UserRoleRepo urRepo;
+    @Autowired
+    private UserRoleRepo urRepo;
 
-	@Autowired
-	PasswordEncoder encoder;
+    @Autowired
+    PasswordEncoder encoder;
 
-	@Override
-	public String registerNewAdmin(AdminRegisterReq adminReq) throws UserException {
+    @Override
+    public String registerNewAdmin(AdminRegisterReq adminReq) throws UserException {
 
-		Optional<Admin> admin0 = aRepo.findByEmailId(adminReq.getEmailId());
+        Optional<Admin> admin0 = aRepo.findByEmailId(adminReq.getEmailId());
 
-		if (admin0.isEmpty()) {
-			
-			Set<String> strRoles = adminReq.getRoles();
+        if (admin0.isEmpty()) {
 
-			Set<UserRole> roles = new HashSet<>();
+            Set<String> strRoles = adminReq.getRoles();
 
-			if (strRoles == null) {
-				UserRole adminRole = urRepo.findByUserRole(Role.ADMIN)
-						.orElseThrow(() -> new RuntimeException("Error: Admin Role is not found..!"));
-				roles.add(adminRole);
-			} else {
+            Set<UserRole> roles = new HashSet<>();
 
-				strRoles.forEach(role -> {
-					switch (role) {
-					case "admin":
-						UserRole adminRole = urRepo.findByUserRole(Role.ADMIN)
-								.orElseThrow(() -> new RuntimeException("Error: Admin Role is not found."));
-						roles.add(adminRole);
+            if (strRoles == null) {
+                UserRole adminRole = urRepo.findByUserRole(Role.ADMIN)
+                        .orElseThrow(() -> new RuntimeException("Error: Admin Role is not found..!"));
+                roles.add(adminRole);
+            } else {
 
-						break;
-					case "student":
-						UserRole studentRole = urRepo.findByUserRole(Role.STUDENT)
-								.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-						roles.add(studentRole);
-						break;
-					}
-				});
-			}
-			
-			User user = new User();
-			user.setName(adminReq.getName());
-			user.setEmailId(adminReq.getEmailId());
-			user.setPassword(encoder.encode(adminReq.getPassword()));
-			user.setRoles(roles);
-			uRepo.save(user);
-			
-			Admin admin1 = new Admin();
-			admin1.setName(adminReq.getName());
-			admin1.setEmailId(adminReq.getEmailId());
-			admin1.setPassword(encoder.encode(adminReq.getPassword()));
-			admin1.setRoles(roles);
-			aRepo.save(admin1);
+                strRoles.forEach(role -> {
+                    switch (role) {
+                        case "admin":
+                            UserRole adminRole = urRepo.findByUserRole(Role.ADMIN)
+                                    .orElseThrow(() -> new RuntimeException("Error: Admin Role is not found."));
+                            roles.add(adminRole);
 
-			return adminReq.getName() + " you are registered successfully...";
-			
-		}
-		  else {
-			throw new ApplicationException("1001","User already exist with this emailId..!", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+                            break;
+                        case "student":
+                            UserRole studentRole = urRepo.findByUserRole(Role.STUDENT)
+                                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            roles.add(studentRole);
+                            break;
+                    }
+                });
+            }
 
-	@Override
-	public String getCurrentLoggedInUser() {
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		String userName = authentication.getName();
-		
-		Optional<User> user = uRepo.findByEmailId(userName);
-		
-		return user.get().getName();
-		
-	}
+            User user = new User();
+            user.setName(adminReq.getName());
+            user.setEmailId(adminReq.getEmailId());
+            user.setPassword(encoder.encode(adminReq.getPassword()));
+            user.setRoles(roles);
+            uRepo.save(user);
+
+            Admin admin1 = new Admin();
+            admin1.setName(adminReq.getName());
+            admin1.setEmailId(adminReq.getEmailId());
+            admin1.setPassword(encoder.encode(adminReq.getPassword()));
+            admin1.setRoles(roles);
+            aRepo.save(admin1);
+
+            return adminReq.getName() + " you are registered successfully...";
+
+        } else {
+            throw new ApplicationException("1001", "User already exist with this emailId..!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public String getCurrentLoggedInUser() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userName = authentication.getName();
+
+        Optional<User> user = uRepo.findByEmailId(userName);
+
+        return user.get().getName();
+
+    }
 
 }

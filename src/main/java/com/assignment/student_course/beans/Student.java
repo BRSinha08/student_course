@@ -24,27 +24,25 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 public class Student {
-	
-	@JsonIgnore
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer roll;
-	private String name;
-	private String address;
-	private String emailId;
-	private String password;
-	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "Student_Roles",
-	joinColumns = @JoinColumn(name = "Student_Id"),
-	inverseJoinColumns = @JoinColumn(name = "Role_Id"))
-	private Set<UserRole> roles = new HashSet<>();
-	
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "students")
-	private List<Course> courses = new ArrayList<>();
-	
-	
-	
-	
+
+    @JsonIgnore
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer roll;
+    private String name;
+    private String address;
+    private String emailId;
+    private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Student_Roles",
+            joinColumns = @JoinColumn(name = "Student_Id"),
+            inverseJoinColumns = @JoinColumn(name = "Role_Id"))
+    private Set<UserRole> roles = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "students")
+    private List<Course> courses = new ArrayList<>();
+
+
 }

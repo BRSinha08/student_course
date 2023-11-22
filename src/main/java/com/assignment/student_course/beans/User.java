@@ -23,18 +23,18 @@ import java.util.Set;
 @Entity
 @Table(name = "Users")
 public class User {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
-	private String emailId;
-	private String password;
-	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "User_Roles",
-	joinColumns = @JoinColumn(name = "User_Id"),
-	inverseJoinColumns = @JoinColumn(name = "Role_Id"))
-	private Set<UserRole> roles = new HashSet<>();
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private String emailId;
+    private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "User_Roles",
+            joinColumns = @JoinColumn(name = "User_Id"),
+            inverseJoinColumns = @JoinColumn(name = "Role_Id"))
+    private Set<UserRole> roles = new HashSet<>();
+
 }

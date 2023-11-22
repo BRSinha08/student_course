@@ -16,54 +16,50 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter{
-	
-	@Autowired
-	private JWTUtils jwtUtils;
-	
-	@Autowired
-	private UserDetailsServiceImpl userDetailsServiceImpl;
+public class JwtAuthFilter extends OncePerRequestFilter {
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		
-		final String authHeader = request.getHeader("Authorization");
-		String userEmail;
-		String jwtToken;
-		
-		if(authHeader == null || !authHeader.startsWith("Bearer "))
-		{
-			filterChain.doFilter(request, response);
-			return;
-		}
+    @Autowired
+    private JWTUtils jwtUtils;
 
-		jwtToken = authHeader.substring(7);
-		userEmail = jwtUtils.extractUsername(jwtToken);
-		
-		if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null)
-		{
-			UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userEmail);
-			
-			final Boolean isTokenValid = jwtUtils.validateToken(jwtToken, userDetails);
-			
-			if(isTokenValid)
-			{
-				UsernamePasswordAuthenticationToken authToken = 
-						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-				
-				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				
-				SecurityContextHolder.getContext().setAuthentication(authToken);
-			}
-		}
-		else
-			throw new RuntimeException("Invalid username/token ..!");
-		
-		
-		filterChain.doFilter(request, response);
-		
-	}
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        final String authHeader = request.getHeader("Authorization");
+        String userEmail;
+        String jwtToken;
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        jwtToken = authHeader.substring(7);
+        userEmail = jwtUtils.extractUsername(jwtToken);
+
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userEmail);
+
+            final Boolean isTokenValid = jwtUtils.validateToken(jwtToken, userDetails);
+
+            if (isTokenValid) {
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        } else
+            throw new RuntimeException("Invalid username/token ..!");
+
+
+        filterChain.doFilter(request, response);
+
+    }
 
 
 }

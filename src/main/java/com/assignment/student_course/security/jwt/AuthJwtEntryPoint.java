@@ -14,26 +14,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class AuthJwtEntryPoint implements AuthenticationEntryPoint{
+public class AuthJwtEntryPoint implements AuthenticationEntryPoint {
 
-	//@SneakyThrows
-	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-						 AuthenticationException authException) throws IOException, ServletException {
-		
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		
-		Map<String, Object> body = new HashMap<>();
-		body.put("Status", HttpServletResponse.SC_UNAUTHORIZED);
-		body.put("Error", "Unauthorised");
-		body.put("Message", authException.getMessage());
-		body.put("Path", request.getServletPath());
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
+    //@SneakyThrows
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("Status", HttpServletResponse.SC_UNAUTHORIZED);
+        body.put("Error", "Unauthorised");
+        body.put("Message", authException.getMessage());
+        body.put("Path", request.getServletPath());
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
 
 
-	}
+    }
 
 }

@@ -22,55 +22,51 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringWebSecurityConfig {
-	
-	@Autowired
-	private UserDetailsServiceImpl userDetailsServiceImpl;
-	
-	@Autowired
-	private AuthJwtEntryPoint authJwtEntryPoint;
-	
-	@Autowired
-	private JwtAuthFilter jwtAuthFilter;
-	
-	
-	@Bean
-	public PasswordEncoder passwordEncoder()
-	{
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Bean
-	public DaoAuthenticationProvider daoAuthenticationProvider()
-	{
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userDetailsServiceImpl);
-		authProvider.setPasswordEncoder(passwordEncoder());
-		return authProvider;
-	}
-	
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception
-	{
-		return authConfig.getAuthenticationManager();
-	}
-	
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-	{
-		return http.csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(auth->{
-					auth.requestMatchers("/api/admin/delete-student/{roll}", "/api/admin/all-students",
-									"/api/admin/register-course", "/api/admin/update-course",
-									"/api/admin/delete-course/{courseId}",
-									"/api/admin/delete-student/{roll}", "/api/admin/all-students")
-							.hasAuthority("ADMIN").requestMatchers("/api/student/update-student").hasAuthority("STUDENT").
-							requestMatchers("/api/register-admin", "/api/admin/login-admin", "/api/student/register-student",
-									"/api/student/login-student", "/api/all-courses", "/api/user/get-current-user").permitAll()
-							.anyRequest().authenticated();
-				})
-				.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authenticationProvider(daoAuthenticationProvider())
-				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
-	}
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @Autowired
+    private AuthJwtEntryPoint authJwtEntryPoint;
+
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsServiceImpl);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/api/admin/delete-student/{roll}", "/api/admin/all-students",
+                                    "/api/admin/register-course", "/api/admin/update-course",
+                                    "/api/admin/delete-course/{courseId}",
+                                    "/api/admin/delete-student/{roll}", "/api/admin/all-students")
+                            .hasAuthority("ADMIN").requestMatchers("/api/student/update-student").hasAuthority("STUDENT").
+                            requestMatchers("/api/register-admin", "/api/admin/login-admin", "/api/student/register-student",
+                                    "/api/student/login-student", "/api/all-courses", "/api/user/get-current-user").permitAll()
+                            .anyRequest().authenticated();
+                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(daoAuthenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 }

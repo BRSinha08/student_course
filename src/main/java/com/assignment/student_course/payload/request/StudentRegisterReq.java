@@ -10,11 +10,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentRegisterReq {
-	
-	private String name;
-	private String address;
-	private String emailId;
-	private String password;
-	
-	private Set<String> roles;
+
+    private String name;
+    private String address;
+    private String emailId;
+    private String password;
+
+    private Set<String> roles;
 }

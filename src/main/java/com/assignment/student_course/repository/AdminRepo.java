@@ -9,8 +9,8 @@ import java.util.Optional;
 @Repository
 public interface AdminRepo extends ListCrudRepository<Admin, Integer> {
 
-	Optional<Admin> findByEmailId(String emailId);
-	
-	boolean existsByEmailId(String emailId);
+    Optional<Admin> findByEmailId(String emailId);
+
+    boolean existsByEmailId(String emailId);
 
 }

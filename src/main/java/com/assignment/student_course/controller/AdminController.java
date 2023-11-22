@@ -26,66 +26,63 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class AdminController {
-	
-	@Autowired
-	private AdminService aService;
-	
-	@Autowired
-	private UserDetailsServiceImpl userDetailsServiceImpl;
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-	@Autowired
-	private JWTUtils jwtUtils;
 
-	@Operation(
-			summary = "Register Admin",
-			description = "Register Admin")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "202", description = "successful operation")
-	})
-	
-	@PostMapping("/register-admin")
-	public ResponseEntity<String> registerNewAdmin(@RequestBody AdminRegisterReq admin) throws UserException
-	{
+    @Autowired
+    private AdminService aService;
 
-		String message = aService.registerNewAdmin(admin);
-		
-		return new ResponseEntity<String>(message, HttpStatus.ACCEPTED);
-	}
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
-	@Operation(
-			summary = "Login Admin",
-			description = "Login Admin")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "202", description = "successful operation")
-	})
-	@PostMapping("/admin/login-admin")
-	public ResponseEntity<?> adminLogIn(@RequestBody LoginRequest loginDetails)
-	{
-		authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginDetails.getEmailId(), loginDetails.getPassword()));
-		
-		UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginDetails.getEmailId());
-		
-		if(userDetails != null)
-			return ResponseEntity.ok(new JwtResponse(jwtUtils.generateToken(userDetails)));
-		
-		return new ResponseEntity<>("Invalid admin log in details..!", HttpStatus.BAD_REQUEST);
-	}
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	@Operation(
-			summary = "fetch current user",
-			description = "fetch current user")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "302", description = "successful operation")
-	})
-	@GetMapping("/user/get-current-user")
-	public ResponseEntity<String> getCurrentLoggedInUser()
-	{
-		String name = aService.getCurrentLoggedInUser();
-		
-		return new ResponseEntity<>(name, HttpStatus.FOUND);
-	}
+    @Autowired
+    private JWTUtils jwtUtils;
+
+    @Operation(
+            summary = "Register Admin",
+            description = "Register Admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "successful operation")
+    })
+
+    @PostMapping("/register-admin")
+    public ResponseEntity<String> registerNewAdmin(@RequestBody AdminRegisterReq admin) throws UserException {
+
+        String message = aService.registerNewAdmin(admin);
+
+        return new ResponseEntity<String>(message, HttpStatus.ACCEPTED);
+    }
+
+    @Operation(
+            summary = "Login Admin",
+            description = "Login Admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "successful operation")
+    })
+    @PostMapping("/admin/login-admin")
+    public ResponseEntity<?> adminLogIn(@RequestBody LoginRequest loginDetails) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDetails.getEmailId(), loginDetails.getPassword()));
+
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginDetails.getEmailId());
+
+        if (userDetails != null)
+            return ResponseEntity.ok(new JwtResponse(jwtUtils.generateToken(userDetails)));
+
+        return new ResponseEntity<>("Invalid admin log in details..!", HttpStatus.BAD_REQUEST);
+    }
+
+    @Operation(
+            summary = "fetch current user",
+            description = "fetch current user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "302", description = "successful operation")
+    })
+    @GetMapping("/user/get-current-user")
+    public ResponseEntity<String> getCurrentLoggedInUser() {
+        String name = aService.getCurrentLoggedInUser();
+
+        return new ResponseEntity<>(name, HttpStatus.FOUND);
+    }
 }

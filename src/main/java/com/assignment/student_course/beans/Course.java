@@ -19,16 +19,16 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Course {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer courseId;
-	private String courseName;
-	private String instructorName;
-	
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
-	private List<Student> students = new ArrayList<>();
-	
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer courseId;
+    private String courseName;
+    private String instructorName;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Student> students = new ArrayList<>();
+
+
 }

@@ -19,88 +19,88 @@ import java.util.UUID;
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobleExceptionHandler {
-	
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<MyErrorDetails> otherExceptionHandler(MethodArgumentNotValidException manve) {
 
-		MyErrorDetails error = new MyErrorDetails();
-		error.setTimestamp(LocalDateTime.now());
-		error.setMessage("Validation failed...");
-		error.setDetails(manve.getBindingResult().getFieldError().getDefaultMessage());
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<MyErrorDetails> otherExceptionHandler(MethodArgumentNotValidException manve) {
 
-		return new ResponseEntity<MyErrorDetails>(error, HttpStatus.NOT_ACCEPTABLE);
+        MyErrorDetails error = new MyErrorDetails();
+        error.setTimestamp(LocalDateTime.now());
+        error.setMessage("Validation failed...");
+        error.setDetails(manve.getBindingResult().getFieldError().getDefaultMessage());
 
-	}
-	
-	@ExceptionHandler(UserException.class)
-	public ResponseEntity<MyErrorDetails> otherExceptionHandler(UserException ue, WebRequest wReq) {
+        return new ResponseEntity<MyErrorDetails>(error, HttpStatus.NOT_ACCEPTABLE);
 
-		MyErrorDetails error = new MyErrorDetails();
-		error.setTimestamp(LocalDateTime.now());
-		error.setMessage(ue.getMessage());
-		error.setDetails(wReq.getDescription(false));
+    }
 
-		return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<MyErrorDetails> otherExceptionHandler(UserException ue, WebRequest wReq) {
 
-	}
-	
-	@ExceptionHandler(StudentException.class)
-	public ResponseEntity<MyErrorDetails> otherExceptionHandler(StudentException pe, WebRequest wReq) {
+        MyErrorDetails error = new MyErrorDetails();
+        error.setTimestamp(LocalDateTime.now());
+        error.setMessage(ue.getMessage());
+        error.setDetails(wReq.getDescription(false));
 
-		MyErrorDetails error = new MyErrorDetails();
-		error.setTimestamp(LocalDateTime.now());
-		error.setMessage(pe.getMessage());
-		error.setDetails(wReq.getDescription(false));
+        return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
 
-		return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
+    }
 
-	}
-	
-	@ExceptionHandler(CourseException.class)
-	public ResponseEntity<MyErrorDetails> otherExceptionHandler(CourseException ce, WebRequest wReq) {
+    @ExceptionHandler(StudentException.class)
+    public ResponseEntity<MyErrorDetails> otherExceptionHandler(StudentException pe, WebRequest wReq) {
 
-		MyErrorDetails error = new MyErrorDetails();
-		error.setTimestamp(LocalDateTime.now());
-		error.setMessage(ce.getMessage());
-		error.setDetails(wReq.getDescription(false));
+        MyErrorDetails error = new MyErrorDetails();
+        error.setTimestamp(LocalDateTime.now());
+        error.setMessage(pe.getMessage());
+        error.setDetails(wReq.getDescription(false));
 
-		return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
 
-	}
-	
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<MyErrorDetails> otherExceptionHandler(Exception e, WebRequest wReq) {
+    }
 
-		MyErrorDetails error = new MyErrorDetails();
-		error.setTimestamp(LocalDateTime.now());
-		error.setMessage(e.getMessage());
-		error.setDetails(wReq.getDescription(false));
+    @ExceptionHandler(CourseException.class)
+    public ResponseEntity<MyErrorDetails> otherExceptionHandler(CourseException ce, WebRequest wReq) {
 
-		return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
+        MyErrorDetails error = new MyErrorDetails();
+        error.setTimestamp(LocalDateTime.now());
+        error.setMessage(ce.getMessage());
+        error.setDetails(wReq.getDescription(false));
 
-	}
+        return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
 
-	@ExceptionHandler(ApplicationException.class)
-	public ResponseEntity<?> handleApplicationException( final ApplicationException exception,
-														 final HttpServletRequest request) {
+    }
 
-		var guid = UUID.randomUUID().toString();
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<MyErrorDetails> otherExceptionHandler(Exception e, WebRequest wReq) {
+
+        MyErrorDetails error = new MyErrorDetails();
+        error.setTimestamp(LocalDateTime.now());
+        error.setMessage(e.getMessage());
+        error.setDetails(wReq.getDescription(false));
+
+        return new ResponseEntity<MyErrorDetails>(error, HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<?> handleApplicationException(final ApplicationException exception,
+                                                        final HttpServletRequest request) {
+
+        var guid = UUID.randomUUID().toString();
 		/*log.error(
 				String.format("Error GUID=%s; error message: %s", guid, exception.getMessage()),
 				exception
 		);*/
-		var response = new ApiErrorResponse(
-				guid,
-				exception.getErrorCode(),
-				exception.getMessage(),
-				exception.getHttpStatus().value(),
-				exception.getHttpStatus().name(),
-				request.getRequestURI(),
-				request.getMethod(),
-				LocalDateTime.now()
-		);
-		return new ResponseEntity<>(response, exception.getHttpStatus());
-	}
-	
-	
+        var response = new ApiErrorResponse(
+                guid,
+                exception.getErrorCode(),
+                exception.getMessage(),
+                exception.getHttpStatus().value(),
+                exception.getHttpStatus().name(),
+                request.getRequestURI(),
+                request.getMethod(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response, exception.getHttpStatus());
+    }
+
+
 }

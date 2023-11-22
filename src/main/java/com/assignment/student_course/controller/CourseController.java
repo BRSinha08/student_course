@@ -23,63 +23,59 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class CourseController {
-	
-	@Autowired
-	private CourseService cService;
 
-	@Operation(
-			summary = "Register Course",
-			description = "Register Course")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "202", description = "successful operation")
-	})
-	@PostMapping("/admin/register-course")
-	public ResponseEntity<Course> registerNewCourse(@RequestBody Course course) throws CourseException
-	{
-		Course course1 = cService.registerNewCourse(course);
-		
-		return new ResponseEntity<>(course1, HttpStatus.ACCEPTED);
-	}
+    @Autowired
+    private CourseService cService;
 
-	@Operation(
-			summary = "Updated Course",
-			description = "Updated Course")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "202", description = "successful operation")
-	})
-	@PutMapping("/admin/update-course")
-	public ResponseEntity<Course> updateCourse(@RequestBody Course course) throws CourseException
-	{
-		Course course1 = cService.updateCourse(course);
-		
-		return new ResponseEntity<Course>(course1, HttpStatus.ACCEPTED);
-	}
+    @Operation(
+            summary = "Register Course",
+            description = "Register Course")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "successful operation")
+    })
+    @PostMapping("/admin/register-course")
+    public ResponseEntity<Course> registerNewCourse(@RequestBody Course course) throws CourseException {
+        Course course1 = cService.registerNewCourse(course);
 
-	@Operation(
-			summary = "Delete Course",
-			description = "Delete Course")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "successful operation")
-	})
-	@DeleteMapping("/admin/delete-course/{courseId}")
-	public ResponseEntity<String> deleteCourse(@PathVariable("courseId") Integer courseId) throws CourseException
-	{
-		cService.deleteCourse(courseId);
-		
-		return new ResponseEntity<String>("Course deleted...", HttpStatus.OK);
-	}
+        return new ResponseEntity<>(course1, HttpStatus.ACCEPTED);
+    }
 
-	@Operation(
-			summary = "fetch All Courses",
-			description = "fetch all courses")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "302", description = "successful operation")
-	})
-	@GetMapping("/all-courses")
-	public ResponseEntity<List<Course>> viewAllCourses() throws CourseException
-	{
-		List<Course> courses = cService.viewAllCourses();
-		
-		return new ResponseEntity<>(courses, HttpStatus.FOUND);
-	}
+    @Operation(
+            summary = "Updated Course",
+            description = "Updated Course")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "successful operation")
+    })
+    @PutMapping("/admin/update-course")
+    public ResponseEntity<Course> updateCourse(@RequestBody Course course) throws CourseException {
+        Course course1 = cService.updateCourse(course);
+
+        return new ResponseEntity<>(course1, HttpStatus.ACCEPTED);
+    }
+
+    @Operation(
+            summary = "Delete Course",
+            description = "Delete Course")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @DeleteMapping("/admin/delete-course/{courseId}")
+    public ResponseEntity<String> deleteCourse(@PathVariable("courseId") Integer courseId) throws CourseException {
+        cService.deleteCourse(courseId);
+
+        return new ResponseEntity<>("Course deleted...", HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "fetch All Courses",
+            description = "fetch all courses")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "302", description = "successful operation")
+    })
+    @GetMapping("/all-courses")
+    public ResponseEntity<List<Course>> viewAllCourses() throws CourseException {
+        List<Course> courses = cService.viewAllCourses();
+
+        return new ResponseEntity<>(courses, HttpStatus.FOUND);
+    }
 }

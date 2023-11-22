@@ -10,11 +10,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminRegisterReq {
-	
-	private String name;
-	private String emailId;
-	private String password;
-	
-	private Set<String> roles;
+
+    private String name;
+    private String emailId;
+    private String password;
+
+    private Set<String> roles;
 
 }

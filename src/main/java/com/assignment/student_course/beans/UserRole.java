@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class UserRole {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer userRoleId;
-	
-	@Enumerated(EnumType.STRING)
-	private Role userRole;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userRoleId;
+
+    @Enumerated(EnumType.STRING)
+    private Role userRole;
 
 }
