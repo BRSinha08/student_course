@@ -5,6 +5,7 @@ import com.assignment.student_course.beans.Role;
 import com.assignment.student_course.beans.Student;
 import com.assignment.student_course.beans.User;
 import com.assignment.student_course.beans.UserRole;
+import com.assignment.student_course.exceptions.ApplicationException;
 import com.assignment.student_course.exceptions.CourseException;
 import com.assignment.student_course.exceptions.StudentException;
 import com.assignment.student_course.payload.request.StudentRegisterReq;
@@ -13,6 +14,7 @@ import com.assignment.student_course.repository.StudentRepo;
 import com.assignment.student_course.repository.UserRepo;
 import com.assignment.student_course.repository.UserRoleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -90,7 +92,8 @@ public class StudentServiceImpl implements StudentService{
 
 			return studentReq.getName()+" you are registered successfully...";
 		}
-		else throw new StudentException("Student already exist with this emailId..!");
+		else throw new ApplicationException("3001","Student already exist with this emailId..!.",
+				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@Override

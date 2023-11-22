@@ -1,9 +1,11 @@
 package com.assignment.student_course.services;
 
 import com.assignment.student_course.beans.Course;
+import com.assignment.student_course.exceptions.ApplicationException;
 import com.assignment.student_course.exceptions.CourseException;
 import com.assignment.student_course.repository.CourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +39,7 @@ public class CourseServiceImpl implements CourseService{
 		{
 			cRepo.deleteById(courseId);
 		}
+
 		else throw new CourseException("course doesnot exist with this Id "+courseId);
 	}
 
@@ -53,11 +56,12 @@ public class CourseServiceImpl implements CourseService{
 
 	@Override
 	public List<Course> viewAllCourses() throws CourseException {
-		
+
 		List<Course> courses = cRepo.findAll();
-		
+
 		if(courses.size() == 0)
-			throw new CourseException("courses not found...");
+			throw new ApplicationException("2001","courses not found...",
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		else
 			return courses;
 		

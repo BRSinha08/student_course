@@ -24,7 +24,7 @@ public class Course {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer courseId;
 	private String courseName;
-	private String InstructorName;
+	private String instructorName;
 	
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)

@@ -4,12 +4,14 @@ import com.assignment.student_course.beans.Admin;
 import com.assignment.student_course.beans.Role;
 import com.assignment.student_course.beans.User;
 import com.assignment.student_course.beans.UserRole;
+import com.assignment.student_course.exceptions.ApplicationException;
 import com.assignment.student_course.exceptions.UserException;
 import com.assignment.student_course.payload.request.AdminRegisterReq;
 import com.assignment.student_course.repository.AdminRepo;
 import com.assignment.student_course.repository.UserRepo;
 import com.assignment.student_course.repository.UserRoleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,7 +75,7 @@ public class AdminServiceImpl implements AdminService {
 			user.setEmailId(adminReq.getEmailId());
 			user.setPassword(encoder.encode(adminReq.getPassword()));
 			user.setRoles(roles);
-			uRepo.saveAndFlush(user);
+			uRepo.save(user);
 			
 			Admin admin1 = new Admin();
 			admin1.setName(adminReq.getName());
@@ -84,8 +86,10 @@ public class AdminServiceImpl implements AdminService {
 
 			return adminReq.getName() + " you are registered successfully...";
 			
-		} else
-			throw new UserException("User already exist with this emailId..!");
+		}
+		  else {
+			throw new ApplicationException("1001","User already exist with this emailId..!", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@Override

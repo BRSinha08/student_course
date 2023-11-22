@@ -8,6 +8,9 @@ import com.assignment.student_course.payload.response.JwtResponse;
 import com.assignment.student_course.security.jwt.JWTUtils;
 import com.assignment.student_course.security.services.UserDetailsServiceImpl;
 import com.assignment.student_course.services.AdminService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +38,13 @@ public class AdminController {
 	
 	@Autowired
 	private JWTUtils jwtUtils;
+
+	@Operation(
+			summary = "Register Admin",
+			description = "Register Admin")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "202", description = "successful operation")
+	})
 	
 	@PostMapping("/register-admin")
 	public ResponseEntity<String> registerNewAdmin(@RequestBody AdminRegisterReq admin) throws UserException
@@ -44,7 +54,13 @@ public class AdminController {
 		
 		return new ResponseEntity<String>(message, HttpStatus.ACCEPTED);
 	}
-	
+
+	@Operation(
+			summary = "Login Admin",
+			description = "Login Admin")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "202", description = "successful operation")
+	})
 	@PostMapping("/admin/login-admin")
 	public ResponseEntity<?> adminLogIn(@RequestBody LoginRequest loginDetails)
 	{
@@ -58,12 +74,18 @@ public class AdminController {
 		
 		return new ResponseEntity<>("Invalid admin log in details..!", HttpStatus.BAD_REQUEST);
 	}
-	
+
+	@Operation(
+			summary = "fetch current user",
+			description = "fetch current user")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "302", description = "successful operation")
+	})
 	@GetMapping("/user/get-current-user")
 	public ResponseEntity<String> getCurrentLoggedInUser()
 	{
 		String name = aService.getCurrentLoggedInUser();
 		
-		return new ResponseEntity<String>(name, HttpStatus.FOUND);
+		return new ResponseEntity<>(name, HttpStatus.FOUND);
 	}
 }
