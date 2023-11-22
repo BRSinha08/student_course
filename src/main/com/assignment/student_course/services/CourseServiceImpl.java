@@ -56,7 +56,7 @@ public class CourseServiceImpl implements CourseService {
 
         if (courses.size() == 0)
             throw new ApplicationException("2001", "courses not found...",
-                    HttpStatus.NOT_FOUND);
+                    HttpStatus.BAD_REQUEST);
         else
             return courses;
 

@@ -126,7 +126,7 @@ public class StudentServiceImpl implements StudentService {
         List<Student> students = sRepo.findAll();
 
         if (students.size() == 0)
-            throw new StudentException("students not found...");
+            throw new ApplicationException("3001","students not found...",HttpStatus.BAD_REQUEST);
         else
             return students;
     }
