@@ -55,14 +55,21 @@ public class SpringWebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/admin/delete-student/{roll}", "/api/admin/all-students",
+                    /*auth.requestMatchers("/api/admin/delete-student/{roll}", "/api/admin/all-students",
                                     "/api/admin/register-course", "/api/admin/update-course",
                                     "/api/admin/delete-course/{courseId}",
-                                    "/api/admin/delete-student/{roll}", "/api/admin/all-students")
+                                    "/api/admin/delete-student/{roll}", "/api/admin/all-students","/swagger-ui/index.html#/")
                             .hasAuthority("ADMIN").requestMatchers("/api/student/update-student").hasAuthority("STUDENT").
                             requestMatchers("/api/register-admin", "/api/admin/login-admin", "/api/student/register-student",
-                                    "/api/student/login-student", "/api/all-courses", "/api/user/get-current-user").permitAll()
-                            .anyRequest().authenticated();
+                                    "/api/student/login-student", "/api/all-courses",
+                                    "/api/user/get-current-user","/swagger-ui/index.html#/").permitAll()
+                            .anyRequest().fullyAuthenticated();*/
+                   // auth.anyRequest().fullyAuthenticated();
+                    //auth.requestMatchers("/swagger-ui/index.html#/").hasAnyAuthority().anyRequest().permitAll();
+                   // auth.anyRequest().fullyAuthenticated();
+                    auth.anyRequest().permitAll();
+
+
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(daoAuthenticationProvider())

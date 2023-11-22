@@ -87,7 +87,7 @@ public class AdminServiceImpl implements AdminService {
             return adminReq.getName() + " you are registered successfully...";
 
         } else {
-            throw new ApplicationException("1001", "User already exist with this emailId..!", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ApplicationException("1001", "User already exist with this emailId..!", HttpStatus.IM_USED);
         }
     }
 

@@ -4,6 +4,7 @@ import com.assignment.student_course.beans.Student;
 import com.assignment.student_course.exceptions.CourseException;
 import com.assignment.student_course.exceptions.StudentException;
 import com.assignment.student_course.payload.request.LoginRequest;
+import com.assignment.student_course.payload.request.StudentDTO;
 import com.assignment.student_course.payload.request.StudentRegisterReq;
 import com.assignment.student_course.security.jwt.JWTUtils;
 import com.assignment.student_course.security.services.UserDetailsServiceImpl;
@@ -87,7 +88,7 @@ public class StudentController {
             @ApiResponse(responseCode = "202", description = "successful operation")
     })
     @PutMapping("/student/update-student")
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) throws StudentException {
+    public ResponseEntity<Student> updateStudent(@RequestBody StudentDTO student) throws StudentException {
         Student student1 = sService.updateStudent(student);
 
         return new ResponseEntity<>(student1, HttpStatus.ACCEPTED);

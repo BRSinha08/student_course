@@ -8,6 +8,7 @@ import com.assignment.student_course.beans.UserRole;
 import com.assignment.student_course.exceptions.ApplicationException;
 import com.assignment.student_course.exceptions.CourseException;
 import com.assignment.student_course.exceptions.StudentException;
+import com.assignment.student_course.payload.request.StudentDTO;
 import com.assignment.student_course.payload.request.StudentRegisterReq;
 import com.assignment.student_course.repository.CourseRepo;
 import com.assignment.student_course.repository.StudentRepo;
@@ -91,7 +92,7 @@ public class StudentServiceImpl implements StudentService {
 
             return studentReq.getName() + " you are registered successfully...";
         } else throw new ApplicationException("3001", "Student already exist with this emailId..!.",
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                HttpStatus.IM_USED);
     }
 
     @Override
@@ -104,12 +105,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student updateStudent(Student student) throws StudentException {
+    public Student updateStudent(StudentDTO student) throws StudentException {
 
         Optional<Student> student1 = sRepo.findById(student.getRoll());
 
-        if (student1.isPresent())
-            return sRepo.save(student);
+        if (student1.isPresent()) {
+            student1.get().setRoll(student.getRoll());
+            student1.get().setName(student.getName());
+            student1.get().setAddress(student.getAddress());
+            student1.get().setPassword(student.getPassword());
+            return sRepo.save(student1.get());
+        }
         else
             throw new StudentException("student doesnot exist...");
     }

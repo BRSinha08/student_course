@@ -40,19 +40,23 @@ public class JWTUtils {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public Map<String, String> generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    private Map<String, String> createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder()
+        String jwtToken = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
+        Map<String, String> jwtTokenGen = new HashMap<>();
+        jwtTokenGen.put("token", jwtToken);
+        jwtTokenGen.put("message", "message");
+        return jwtTokenGen;
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

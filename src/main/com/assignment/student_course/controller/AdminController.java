@@ -68,7 +68,7 @@ public class AdminController {
         UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(loginDetails.getEmailId());
 
         if (userDetails != null)
-            return ResponseEntity.ok(new JwtResponse(jwtUtils.generateToken(userDetails)));
+            return ResponseEntity.ok((jwtUtils.generateToken(userDetails)));
 
         return new ResponseEntity<>("Invalid admin log in details..!", HttpStatus.BAD_REQUEST);
     }

@@ -24,7 +24,7 @@ public class CourseServiceImpl implements CourseService {
         Course course1 = cRepo.findByCourseName(course.getCourseName());
 
         if (course1 == null) {
-            cRepo.saveAndFlush(course);
+            cRepo.save(course);
             return course;
         } else throw new CourseException("course is already exist...");
     }
@@ -56,7 +56,7 @@ public class CourseServiceImpl implements CourseService {
 
         if (courses.size() == 0)
             throw new ApplicationException("2001", "courses not found...",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+                    HttpStatus.NOT_FOUND);
         else
             return courses;
 
