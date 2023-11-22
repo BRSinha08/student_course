@@ -134,18 +134,4 @@ public class StudentController {
         return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
     }
 
-    @Operation(
-            summary = "Update Courses for one Student by course id and roll id",
-            description = "Update Courses for one Student by course id and roll id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "successful operation")
-    })
-    @PostMapping("/admin/update-course-to-student/{courseId}/{roll}")
-    public ResponseEntity<String> updateCourseToStudent(@PathVariable("courseId") Integer courseId,
-                                                        @PathVariable("roll") Integer roll)
-            throws StudentException, CourseException {
-        String message = sService.updateCourseByStudent(courseId, roll);
-
-        return new ResponseEntity<>(message, HttpStatus.ACCEPTED);
-    }
 }

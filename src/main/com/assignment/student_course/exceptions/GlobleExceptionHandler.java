@@ -2,7 +2,6 @@
 package com.assignment.student_course.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestControllerAdvice
-@Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobleExceptionHandler {
 
