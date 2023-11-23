@@ -59,7 +59,7 @@ public class StudentServiceImpl implements StudentService {
             } else {
 
                 strRoles.forEach(role -> {
-                    switch (role) {
+                    switch (role.toLowerCase()) {
                         case "student":
                             UserRole studentRole = urRepo.findByUserRole(Role.STUDENT)
                                     .orElseThrow(() -> new RuntimeException("Error: Student_Role is not found..!"));

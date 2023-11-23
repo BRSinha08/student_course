@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringWebSecurityConfig {
 
     @Autowired
@@ -55,25 +55,25 @@ public class SpringWebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    /*auth.requestMatchers("/api/admin/delete-student/{roll}", "/api/admin/all-students",
+                    auth.requestMatchers("/api/admin/delete-student/{roll}",
                                     "/api/admin/register-course", "/api/admin/update-course",
                                     "/api/admin/delete-course/{courseId}",
-                                    "/api/admin/delete-student/{roll}", "/api/admin/all-students","/swagger-ui/index.html#/")
-                            .hasAuthority("ADMIN").requestMatchers("/api/student/update-student").hasAuthority("STUDENT").
-                            requestMatchers("/api/register-admin", "/api/admin/login-admin", "/api/student/register-student",
+                                    "/api/admin/delete-student/{roll}",/*)
+                            .hasAuthority("ADMIN").requestMatchers(*/"/api/student/update-student",/*).hasAuthority("STUDENT").
+                            requestMatchers(*/"/api/register-admin", "/api/admin/login-admin", "/api/student/register-student",
                                     "/api/student/login-student", "/api/all-courses",
-                                    "/api/user/get-current-user","/swagger-ui/index.html#/").permitAll()
-                            .anyRequest().fullyAuthenticated();*/
-                   // auth.anyRequest().fullyAuthenticated();
-                    //auth.requestMatchers("/swagger-ui/index.html#/").hasAnyAuthority().anyRequest().permitAll();
-                   // auth.anyRequest().fullyAuthenticated();
-                    auth.anyRequest().permitAll();
-
-
+                                    "/api/user/get-current-user").permitAll();
+                   auth.requestMatchers("/swagger-ui/**","/api/admin/all-students")
+                            .permitAll();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(daoAuthenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/v3/api-docs/**");
     }
 }

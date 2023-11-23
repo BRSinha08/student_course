@@ -54,17 +54,18 @@ public class AdminServiceImpl implements AdminService {
             } else {
 
                 strRoles.forEach(role -> {
-                    switch (role) {
+                    switch (role.toLowerCase()) {
                         case "admin":
-                            UserRole adminRole = urRepo.findByUserRole(Role.ADMIN)
-                                    .orElseThrow(() -> new RuntimeException("Error: Admin Role is not found."));
+                            UserRole adminRole = new UserRole();
+                            adminRole.setUserRole(Role.ADMIN);
                             roles.add(adminRole);
-
+                            urRepo.save(adminRole);
                             break;
                         case "student":
-                            UserRole studentRole = urRepo.findByUserRole(Role.STUDENT)
-                                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            UserRole studentRole = new UserRole();
+                            studentRole.setUserRole(Role.STUDENT);
                             roles.add(studentRole);
+                            urRepo.save(studentRole);
                             break;
                     }
                 });
